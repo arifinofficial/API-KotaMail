@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Framework.Dto\Framework.Dto.csproj" />
+    <ProjectReference Include="..\Framework.RepositoryContract\Framework.RepositoryContract.csproj" />
+    <ProjectReference Include="..\Framework.ServiceContract\Framework.ServiceContract.csproj" />
+  </ItemGroup>
+
+</Project>

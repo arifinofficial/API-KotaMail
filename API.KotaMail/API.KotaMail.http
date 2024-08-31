@@ -1,0 +1,6 @@
+@API.KotaMail_HostAddress = http://localhost:5133
+
+GET {{API.KotaMail_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

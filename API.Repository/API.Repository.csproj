@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Api.DataAccess\API.DataAccess.csproj" />
+    <ProjectReference Include="..\API.Dto\API.Dto.csproj" />
+    <ProjectReference Include="..\API.RepositoryContract\API.RepositoryContract.csproj" />
+    <ProjectReference Include="..\Framework.Repository\Framework.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

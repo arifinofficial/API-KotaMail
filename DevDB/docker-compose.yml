@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  db_kotamail:
+    image: mysql:8.0
+    container_name: km-mysql
+    restart: always
+    environment: 
+      MYSQL_ROOT_PASSWORD: rootx
+      MYSQL_DATABASE: api.kotamail
+      MYSQL_USER: kotamail
+      MYSQL_PASSWORD: kotamailpassw0rdx
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_kotamail_data:/var/lib/mysql 
+
+volumes:
+  db_kotamail_data:
