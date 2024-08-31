@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  api.kotamail:
+    image: ${DOCKER_REGISTRY-}apikotamail
+    build:
+      context: .
+      dockerfile: API.KotaMail/Dockerfile
