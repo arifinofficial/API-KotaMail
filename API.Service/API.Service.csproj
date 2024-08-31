@@ -6,6 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.7.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\API.Core\API.Core.csproj" />
     <ProjectReference Include="..\API.Dto\API.Dto.csproj" />
     <ProjectReference Include="..\API.RepositoryContract\API.RepositoryContract.csproj" />
     <ProjectReference Include="..\API.ServiceContract\API.ServiceContract.csproj" />

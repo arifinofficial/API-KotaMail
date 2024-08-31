@@ -2,17 +2,14 @@
 using API.KotaMail.Models.Connection;
 using API.ServiceContract;
 using Framework.Application.Controllers;
+using Framework.Application.Helpers;
 using Framework.Application.ModelBinder;
 using Framework.Application.Models;
+using Framework.Core;
 using Framework.ServiceContract.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Framework.Application.Helpers;
-using MailKit.Net.Imap;
-using MailKit;
-using MailKit.Security;
-using Framework.Core;
 
 namespace API.KotaMail.Controllers
 {
@@ -21,16 +18,19 @@ namespace API.KotaMail.Controllers
     [Route("[controller]")]
     public class ConnectionController(
         IConnectionService connectionService, 
-        IConfiguration configurationService, 
+        IConfiguration configuration, 
         IConnectionListService connectionListService) : ApiBaseController
     {
-        private readonly IConfiguration _configurationService = configurationService;
+        private readonly IConfiguration _configuration = configuration;
         private readonly IConnectionService _connectionService = connectionService;
         private readonly IConnectionListService _connectionListService = connectionListService;
 
         [HttpGet]
         public async Task<IActionResult> PagedSearch([ModelBinder(typeof(GridModelBinder))] GridModel model)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var filters = model.Filters + (string.IsNullOrEmpty(model.Filters) ? "" : " AND ") + $"UserId = \"{userId}\"";
+
             var response = await _connectionService.PagedSearchAsync(new PagedSearchRequest
             {
                 PageIndex = model.PageIndex - 1,
@@ -38,7 +38,7 @@ namespace API.KotaMail.Controllers
                 OrderByFieldName = model.OrderByFieldName,
                 SortOrder = model.SortOrder,
                 Keyword = model.Keyword,
-                Filters = model.Filters
+                Filters = filters
             });
 
             var rowJsonData = new List<object>();
@@ -63,8 +63,8 @@ namespace API.KotaMail.Controllers
                 return GetErrorJson(connectionListResponse);
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var base64key = _configurationService["Application:Key"];
-            var base64Iv = _configurationService["Application:IV"];
+            var base64key = _configuration["Application:Key"];
+            var base64Iv = _configuration["Application:IV"];
 
             var connectionDto = new ConnectionDto
             {
@@ -158,23 +158,6 @@ namespace API.KotaMail.Controllers
                 return GetErrorJson(response);
 
             return GetSuccessJson(response, response.Data);
-        }
-
-        [HttpGet("mailbox/{id}")]
-        public async Task<IActionResult> Mailbox(ulong id)
-        {
-            using (var client = new ImapClient())
-            {
-                client.Connect("imap.gmail.com", 993, SecureSocketOptions.SslOnConnect);
-                client.Authenticate("arifindeath@gmail.com", "wyxeoorjmzyubgrs");
-
-                var inbox = client.Inbox;
-                inbox.Open(FolderAccess.ReadOnly);
-
-                client.Disconnect(true);
-            }
-
-            return GetBasicSuccessJson();
         }
 
         private static object PopulateResponse(ConnectionDto dto)
