@@ -1,6 +1,5 @@
-﻿using API.Core;
-using API.Dto;
-using API.ServiceContract;
+﻿using API.ServiceContract;
+using API.ServiceContract.Request;
 using Framework.Application.Controllers;
 using Framework.ServiceContract.Request;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +8,10 @@ namespace API.KotaMail.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class MailboxController(IConnectionService connectionService) : ApiBaseController
+    public class MailboxController(IConnectionService connectionService, IMailboxService mailboxService) : ApiBaseController
     {
         private readonly IConnectionService _connectionService = connectionService;
+        private readonly IMailboxService _mailboxService = mailboxService;
 
         [HttpGet("{path}")]
         public async Task<IActionResult> Mailbox(string path)
@@ -29,19 +29,12 @@ namespace API.KotaMail.Controllers
             if(response.IsError())
                 return GetErrorJson(response);
 
-            var mailboxResponse = await _connectionService.GetMailboxAsync(new GenericRequest<Dto.MailboxDto>
+            var mailboxResponse = await _mailboxService.GetMailboxAsync(new GenericRequest<MailboxRequest>
             {
-                Data = new MailboxDto
+                Data = new MailboxRequest
                 {
                     Connection = response.DtoCollection.FirstOrDefault(),
-                    FilterMailbox = [
-                        new Dictionary<string, string> {
-                            {
-                                CoreConstant.FilterMailboxParameter.Subject,
-                                "Netflix Update"
-                            }
-                        } 
-                    ]
+                    FilterMailbox = []
                 }
             });
 
