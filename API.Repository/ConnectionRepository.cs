@@ -32,9 +32,13 @@ namespace API.Repository
         {
             var dbSet = Context.Set<Connection>();
             var queryable = string.IsNullOrEmpty(parameter.Filters)
-                ? dbSet.Include(x => x.ConnectionDetails)
+                ? dbSet
+                    .Include(x => x.ConnectionDetails)
+                    .ThenInclude(x => x.ConnectionDetailFilters)
                 .AsQueryable()
-                : dbSet.Include(x => x.ConnectionDetails)
+                : dbSet
+                    .Include(x => x.ConnectionDetails)
+                    .ThenInclude(x => x.ConnectionDetailFilters)
                 .Where(parameter.Filters);
 
             queryable = string.IsNullOrEmpty(parameter.Keyword)

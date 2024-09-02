@@ -29,12 +29,15 @@ namespace API.KotaMail.Controllers
             if(response.IsError())
                 return GetErrorJson(response);
 
+            var connectionDto = response.DtoCollection.FirstOrDefault();
+            var connectionDetailFilterDto = connectionDto.ConnectionDetails.FirstOrDefault()?.ConnectionDetailFilters;
+
             var mailboxResponse = await _mailboxService.GetMailboxAsync(new GenericRequest<MailboxRequest>
             {
                 Data = new MailboxRequest
                 {
-                    Connection = response.DtoCollection.FirstOrDefault(),
-                    FilterMailbox = []
+                    Connection = connectionDto,
+                    ConnectionDetailFilters = connectionDetailFilterDto
                 }
             });
 
