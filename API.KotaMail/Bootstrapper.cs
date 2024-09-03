@@ -22,6 +22,7 @@ namespace API.KotaMail
             services.AddScoped<IConnectionDetailService, ConnectionDetailService>();
             services.AddScoped<IMailboxService, MailboxService>();
             services.AddScoped<IConnectionDetailFilterService, ConnectionDetailFilterService>();
+            services.AddSingleton<ImapClientService>();
         }
     }
 }
