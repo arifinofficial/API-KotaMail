@@ -11,5 +11,7 @@ namespace API.Dto
         public string ConnectionType { get; set; }
         public string Server { get; set; }
         public int Port { get; set; }
+
+        public ICollection<ConnectionDetailFilterDto> ConnectionDetailFilters { get; set; }
     }
 }

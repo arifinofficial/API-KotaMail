@@ -18,6 +18,7 @@ namespace API.DataAccess.Application
         public DbSet<ConnectionList> ConnectionLists { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<ConnectionDetail> ConnectionDetails { get; set; }
+        public DbSet<ConnectionDetailFilter> ConnectionDetailFilters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -105,6 +106,39 @@ namespace API.DataAccess.Application
 
                 entity.Property(c => c.Port)
                     .IsRequired();
+
+                entity.Property(c => c.CreatedBy)
+                    .IsRequired()
+                    .HasColumnType("varchar(256)")
+                    .HasMaxLength(256);
+
+                entity.Property(c => c.LastModifiedBy)
+                    .IsRequired()
+                    .HasColumnType("varchar(256)")
+                    .HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<ConnectionDetailFilter>(entity =>
+            {
+                entity.HasIndex(c => c.UserId);
+
+                entity.HasIndex(c => c.ConnectionDetailId);
+
+                entity.Property(c => c.UserId)
+                    .IsRequired();
+
+                entity.Property(c => c.ConnectionDetailId)
+                    .IsRequired();
+
+                entity.Property(c => c.Key)
+                    .IsRequired()
+                    .HasColumnType("varchar(256)")
+                    .HasMaxLength(256);
+
+                entity.Property(c => c.Value)
+                    .IsRequired()
+                    .HasColumnType("varchar(256)")
+                    .HasMaxLength(256);
 
                 entity.Property(c => c.CreatedBy)
                     .IsRequired()

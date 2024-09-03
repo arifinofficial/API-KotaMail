@@ -1,4 +1,5 @@
 ﻿using API.Core;
+using API.Dto;
 using API.ServiceContract;
 using API.ServiceContract.Request;
 using API.ServiceContract.Response;
@@ -41,14 +42,14 @@ namespace API.Service
 
                 var inbox = client.Inbox;
                 inbox.Open(FolderAccess.ReadOnly);
-                var inboxMessages = await ReadEmailsFolder(inbox, request.Data.FilterMailbox);
+                var inboxMessages = await ReadEmailsFolder(inbox, request.Data.ConnectionDetailFilters);
 
                 var spamMessages = new List<MimeMessage>();
                 var spamFolder = client.GetFolder(SpecialFolder.Junk);
                 if (spamFolder != null)
                 {
                     await spamFolder.OpenAsync(FolderAccess.ReadOnly);
-                    await ReadEmailsFolder(spamFolder, request.Data.FilterMailbox);
+                    await ReadEmailsFolder(spamFolder, request.Data.ConnectionDetailFilters);
                 }
 
                 var messagesList = inboxMessages.Union(spamMessages).ToList();
@@ -76,7 +77,7 @@ namespace API.Service
             return response;
         }
 
-        private static async Task<List<MimeMessage>> ReadEmailsFolder(IMailFolder folder, List<MailboxFilterRequest> filterMailbox)
+        private static async Task<List<MimeMessage>> ReadEmailsFolder(IMailFolder folder, ICollection<ConnectionDetailFilterDto> filterMailbox)
         {
             var messages = new List<MimeMessage>();
             SearchQuery query = SearchQuery.All;

@@ -30,4 +30,8 @@
     <ProjectReference Include="..\Framework.Application\Framework.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Mailbox\" />
+  </ItemGroup>
+
 </Project>
