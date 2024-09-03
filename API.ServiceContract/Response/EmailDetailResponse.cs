@@ -1,8 +1,8 @@
 ﻿namespace API.ServiceContract.Response
 {
-    public class MailboxResponse
+    public class EmailDetailResponse
     {
-        public string HtmlBody { get; set; }
         public string TextBody { get; set; }
+        public string HtmlBody { get; set; }
     }
 }

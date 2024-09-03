@@ -7,6 +7,8 @@ namespace API.ServiceContract
 {
     public interface IMailboxService
     {
-        Task<GenericResponse<List<MailboxResponse>>> GetMailboxAsync(GenericRequest<MailboxRequest> request);
+        Task<GenericResponse<List<EmailSummaryResponse>>> GetEmailSummaries(GenericRequest<EmailSummaryRequest> request);
+
+        Task<GenericResponse<EmailDetailResponse>> GetEmailDetail(GenericRequest<EmailDetailRequest> request);
     }
 }

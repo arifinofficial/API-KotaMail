@@ -2,9 +2,9 @@
 
 namespace API.ServiceContract.Request
 {
-    public class MailboxRequest
+    public class EmailDetailRequest
     {
         public ConnectionDto Connection { get; set; }
-        public ICollection<ConnectionDetailFilterDto> ConnectionDetailFilters { get; set; }
+        public uint Uid { get; set; }
     }
 }

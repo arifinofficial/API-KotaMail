@@ -54,8 +54,8 @@ namespace API.DataAccess.Application
 
                 entity.Property(c => c.Path)
                     .IsRequired()
-                    .HasColumnType("varchar(256)")
-                    .HasMaxLength(256);
+                    .HasColumnType("varchar(500)")
+                    .HasMaxLength(500);
 
                 entity.Property(c => c.CreatedBy)
                     .IsRequired()
@@ -66,6 +66,9 @@ namespace API.DataAccess.Application
                     .IsRequired()
                     .HasColumnType("varchar(256)")
                     .HasMaxLength(256);
+
+                entity.HasIndex(c => c.Path)
+                    .IsUnique();
             });
 
             modelBuilder.Entity<ConnectionDetail>(entity =>
