@@ -34,11 +34,11 @@ namespace API.Repository
             var queryable = string.IsNullOrEmpty(parameter.Filters)
                 ? dbSet
                     .Include(x => x.ConnectionDetails)
-                    .ThenInclude(x => x.ConnectionDetailFilters)
+                    .Include(x => x.ConnectionFilters)
                 .AsQueryable()
                 : dbSet
                     .Include(x => x.ConnectionDetails)
-                    .ThenInclude(x => x.ConnectionDetailFilters)
+                    .Include(x => x.ConnectionFilters)
                 .Where(parameter.Filters);
 
             queryable = string.IsNullOrEmpty(parameter.Keyword)

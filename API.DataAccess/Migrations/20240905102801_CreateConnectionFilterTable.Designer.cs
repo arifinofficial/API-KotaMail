@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240903164505_MakeColumnPathUniqueInConnectionTable")]
-    partial class MakeColumnPathUniqueInConnectionTable
+    [Migration("20240905102801_CreateConnectionFilterTable")]
+    partial class CreateConnectionFilterTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,7 +143,7 @@ namespace API.DataAccess.Migrations
                     b.ToTable("ConnectionDetails");
                 });
 
-            modelBuilder.Entity("API.DataAccess.Application.ConnectionDetailFilter", b =>
+            modelBuilder.Entity("API.DataAccess.Application.ConnectionFilter", b =>
                 {
                     b.Property<ulong>("Id")
                         .ValueGeneratedOnAdd()
@@ -151,7 +151,7 @@ namespace API.DataAccess.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<ulong>("Id"));
 
-                    b.Property<ulong>("ConnectionDetailId")
+                    b.Property<ulong>("ConnectionId")
                         .HasColumnType("bigint unsigned");
 
                     b.Property<string>("CreatedBy")
@@ -186,11 +186,11 @@ namespace API.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConnectionDetailId");
+                    b.HasIndex("ConnectionId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ConnectionDetailFilters");
+                    b.ToTable("ConnectionFilters");
                 });
 
             modelBuilder.Entity("API.DataAccess.Application.ConnectionList", b =>
@@ -468,11 +468,11 @@ namespace API.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("API.DataAccess.Application.ConnectionDetailFilter", b =>
+            modelBuilder.Entity("API.DataAccess.Application.ConnectionFilter", b =>
                 {
-                    b.HasOne("API.DataAccess.Application.ConnectionDetail", "ConnectionDetail")
-                        .WithMany("ConnectionDetailFilters")
-                        .HasForeignKey("ConnectionDetailId")
+                    b.HasOne("API.DataAccess.Application.Connection", null)
+                        .WithMany("ConnectionFilters")
+                        .HasForeignKey("ConnectionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -481,8 +481,6 @@ namespace API.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ConnectionDetail");
 
                     b.Navigation("User");
                 });
@@ -541,11 +539,8 @@ namespace API.DataAccess.Migrations
             modelBuilder.Entity("API.DataAccess.Application.Connection", b =>
                 {
                     b.Navigation("ConnectionDetails");
-                });
 
-            modelBuilder.Entity("API.DataAccess.Application.ConnectionDetail", b =>
-                {
-                    b.Navigation("ConnectionDetailFilters");
+                    b.Navigation("ConnectionFilters");
                 });
 
             modelBuilder.Entity("API.DataAccess.Application.ConnectionList", b =>

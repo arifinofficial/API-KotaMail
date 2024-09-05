@@ -3,7 +3,7 @@ using Framework.RepositoryContract;
 
 namespace API.RepositoryContract
 {
-    public interface IConnectionDetailFilterRepository : IBaseUserRepository<ConnectionDetailFilterDto>
+    public interface IConnectionFilterRepository : IBaseUserRepository<ConnectionFilterDto>
     {
     }
 }

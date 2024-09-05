@@ -1,14 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace API.KotaMail.Models.ConnectionDetailFilter
+namespace API.KotaMail.Models.ConnectionFilter
 {
-    public class EditModel
+    public class CreateModel
     {
         [Required]
-        public ulong Id { get; set; }
-
-        [Required]
-        public ulong ConnectionDetailId { get; set; }
+        public ulong ConnectionId { get; set; }
 
         [Required]
         [MaxLength(256)]

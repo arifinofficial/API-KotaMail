@@ -11,7 +11,7 @@ namespace API.DataAccess
             CreateMap<Connection, ConnectionDto>().ReverseMap();
             CreateMap<ConnectionList, ConnectionListDto>().ReverseMap();
             CreateMap<ConnectionDetail, ConnectionDetailDto>().ReverseMap();
-            CreateMap<ConnectionDetailFilter, ConnectionDetailFilterDto>().ReverseMap();
+            CreateMap<ConnectionFilter, ConnectionFilterDto>().ReverseMap();
         }
     }
 }

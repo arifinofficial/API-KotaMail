@@ -7,20 +7,32 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateConnectionDetailFiltersTable : Migration
+    public partial class CreateConnectionFilterTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "Path",
+                table: "Connections",
+                type: "varchar(500)",
+                maxLength: 500,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "varchar(256)",
+                oldMaxLength: 256)
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .OldAnnotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
-                name: "ConnectionDetailFilters",
+                name: "ConnectionFilters",
                 columns: table => new
                 {
                     Id = table.Column<ulong>(type: "bigint unsigned", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ConnectionDetailId = table.Column<ulong>(type: "bigint unsigned", nullable: false),
+                    ConnectionId = table.Column<ulong>(type: "bigint unsigned", nullable: false),
                     Key = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Value = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
@@ -34,30 +46,36 @@ namespace API.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ConnectionDetailFilters", x => x.Id);
+                    table.PrimaryKey("PK_ConnectionFilters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ConnectionDetailFilters_AspNetUsers_UserId",
+                        name: "FK_ConnectionFilters_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ConnectionDetailFilters_ConnectionDetails_ConnectionDetailId",
-                        column: x => x.ConnectionDetailId,
-                        principalTable: "ConnectionDetails",
+                        name: "FK_ConnectionFilters_Connections_ConnectionId",
+                        column: x => x.ConnectionId,
+                        principalTable: "Connections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConnectionDetailFilters_ConnectionDetailId",
-                table: "ConnectionDetailFilters",
-                column: "ConnectionDetailId");
+                name: "IX_Connections_Path",
+                table: "Connections",
+                column: "Path",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConnectionDetailFilters_UserId",
-                table: "ConnectionDetailFilters",
+                name: "IX_ConnectionFilters_ConnectionId",
+                table: "ConnectionFilters",
+                column: "ConnectionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConnectionFilters_UserId",
+                table: "ConnectionFilters",
                 column: "UserId");
         }
 
@@ -65,7 +83,23 @@ namespace API.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ConnectionDetailFilters");
+                name: "ConnectionFilters");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Connections_Path",
+                table: "Connections");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Path",
+                table: "Connections",
+                type: "varchar(256)",
+                maxLength: 256,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "varchar(500)",
+                oldMaxLength: 500)
+                .Annotation("MySql:CharSet", "utf8mb4")
+                .OldAnnotation("MySql:CharSet", "utf8mb4");
         }
     }
 }

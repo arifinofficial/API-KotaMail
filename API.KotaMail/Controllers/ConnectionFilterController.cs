@@ -1,5 +1,5 @@
 ﻿using API.Dto;
-using API.KotaMail.Models.ConnectionDetailFilter;
+using API.KotaMail.Models.ConnectionFilter;
 using API.ServiceContract;
 using Framework.Application.Controllers;
 using Framework.ServiceContract.Request;
@@ -12,10 +12,10 @@ namespace API.KotaMail.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class ConnectionDetailFilterController(IConnectionDetailService connectionDetailService, IConnectionDetailFilterService connectionDetailFilterService) : ApiBaseController
+    public class ConnectionFilterController(IConnectionService connectionService, IConnectionFilterService connectionFilterService) : ApiBaseController
     {
-        private readonly IConnectionDetailService _connectionDetailService = connectionDetailService;
-        private readonly IConnectionDetailFilterService _connectionDetailFilterService = connectionDetailFilterService;
+        private readonly IConnectionService _connectionService = connectionService;
+        private readonly IConnectionFilterService _connectionFilterService = connectionFilterService;
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateModel model)
@@ -25,26 +25,26 @@ namespace API.KotaMail.Controllers
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var connectionDetailResponse = await _connectionDetailService.UserReadAsync(new GenericUserRequest<ulong> { 
+            var connectionResponse = await _connectionService.UserReadAsync(new GenericUserRequest<ulong> { 
                 UserId = userId,
-                Data = model.ConnectionDetailId
+                Data = model.ConnectionId
             });
 
-            if (connectionDetailResponse.IsError())
-                return GetErrorJson(connectionDetailResponse);
+            if (connectionResponse.IsError())
+                return GetErrorJson(connectionResponse);
 
-            var connectionDetailFilterDto = new ConnectionDetailFilterDto
+            var connectionFilterDto = new ConnectionFilterDto
             {
                 UserId = userId,
-                ConnectionDetailId = connectionDetailResponse.Data.Id,
+                ConnectionId = connectionResponse.Data.Id,
                 Key = model.Key,
                 Value = model.Value
             };
-            PopulateAuditFieldsOnCreate(connectionDetailFilterDto);
+            PopulateAuditFieldsOnCreate(connectionFilterDto);
 
-            var response = await _connectionDetailFilterService.InsertAsync(new GenericRequest<ConnectionDetailFilterDto>
+            var response = await _connectionFilterService.InsertAsync(new GenericRequest<ConnectionFilterDto>
             {
-                Data = connectionDetailFilterDto
+                Data = connectionFilterDto
             });
 
             if(response.IsError())
@@ -64,20 +64,20 @@ namespace API.KotaMail.Controllers
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var readConnectionDetailFilter = await _connectionDetailFilterService.UserReadAsync(new GenericUserRequest<ulong>
+            var readConnectionFilter = await _connectionFilterService.UserReadAsync(new GenericUserRequest<ulong>
             {
                 UserId = userId,
                 Data = id
             });
 
-            var connectionDetailFilterDto = readConnectionDetailFilter.Data;
-            connectionDetailFilterDto.Key = model.Key;
-            connectionDetailFilterDto.Value = model.Value;
-            PopulateAuditFieldsOnUpdate(connectionDetailFilterDto);
+            var connectionFilterDto = readConnectionFilter.Data;
+            connectionFilterDto.Key = model.Key;
+            connectionFilterDto.Value = model.Value;
+            PopulateAuditFieldsOnUpdate(connectionFilterDto);
 
-            var response = await _connectionDetailFilterService.UpdateAsync(new GenericRequest<ConnectionDetailFilterDto> 
+            var response = await _connectionFilterService.UpdateAsync(new GenericRequest<ConnectionFilterDto> 
             { 
-                Data = connectionDetailFilterDto 
+                Data = connectionFilterDto 
             });
 
             if(response.IsError()) 
@@ -91,7 +91,7 @@ namespace API.KotaMail.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var response = await _connectionDetailFilterService.UserDeleteAsync(new GenericUserRequest<ulong> { UserId = userId, Data = id });
+            var response = await _connectionFilterService.UserDeleteAsync(new GenericUserRequest<ulong> { UserId = userId, Data = id });
 
             if(response.IsError())
                 return GetErrorJson(response);

@@ -5,6 +5,6 @@ namespace API.ServiceContract.Request
     public class EmailSummaryRequest
     {
         public ConnectionDto Connection { get; set; }
-        public ICollection<ConnectionDetailFilterDto> ConnectionDetailFilters { get; set; }
+        public ICollection<ConnectionFilterDto> ConnectionDetailFilters { get; set; }
     }
 }

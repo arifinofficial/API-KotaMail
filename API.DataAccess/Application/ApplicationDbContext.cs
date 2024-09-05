@@ -18,7 +18,7 @@ namespace API.DataAccess.Application
         public DbSet<ConnectionList> ConnectionLists { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<ConnectionDetail> ConnectionDetails { get; set; }
-        public DbSet<ConnectionDetailFilter> ConnectionDetailFilters { get; set; }
+        public DbSet<ConnectionFilter> ConnectionFilters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -121,16 +121,16 @@ namespace API.DataAccess.Application
                     .HasMaxLength(256);
             });
 
-            modelBuilder.Entity<ConnectionDetailFilter>(entity =>
+            modelBuilder.Entity<ConnectionFilter>(entity =>
             {
                 entity.HasIndex(c => c.UserId);
 
-                entity.HasIndex(c => c.ConnectionDetailId);
+                entity.HasIndex(c => c.ConnectionId);
 
                 entity.Property(c => c.UserId)
                     .IsRequired();
 
-                entity.Property(c => c.ConnectionDetailId)
+                entity.Property(c => c.ConnectionId)
                     .IsRequired();
 
                 entity.Property(c => c.Key)

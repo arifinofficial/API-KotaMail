@@ -2,9 +2,9 @@
 
 namespace API.Dto
 {
-    public class ConnectionDetailFilterDto : BaseUserDto<ulong>
+    public class ConnectionFilterDto : BaseUserDto<ulong>
     {
-        public ulong ConnectionDetailId { get; set; }
+        public ulong ConnectionId { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
     }

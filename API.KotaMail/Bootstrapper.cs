@@ -12,7 +12,7 @@ namespace API.KotaMail
             services.AddScoped<IConnectionRepository, ConnectionRepository>();
             services.AddScoped<IConnectionListRepository, ConnectionListRepository>();
             services.AddScoped<IConnectionDetailRepository, ConnectionDetailRepository>();
-            services.AddScoped<IConnectionDetailFilterRepository, ConnectionDetailFilterRepository>();
+            services.AddScoped<IConnectionFilterRepository, ConnectionFilterRepository>();
         }
 
         public static void SetupServices(IServiceCollection services)
@@ -21,7 +21,7 @@ namespace API.KotaMail
             services.AddScoped<IConnectionListService, ConnectionListService>();
             services.AddScoped<IConnectionDetailService, ConnectionDetailService>();
             services.AddScoped<IMailboxService, MailboxService>();
-            services.AddScoped<IConnectionDetailFilterService, ConnectionDetailFilterService>();
+            services.AddScoped<IConnectionFilterService, ConnectionFilterService>();
             services.AddSingleton<ImapClientService>();
         }
     }

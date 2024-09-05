@@ -14,5 +14,6 @@
 
         public User User { get; set; }
         public ICollection<ConnectionDetail> ConnectionDetails { get; set; }
+        public ICollection<ConnectionFilter> ConnectionFilters { get; set; }
     }
 }

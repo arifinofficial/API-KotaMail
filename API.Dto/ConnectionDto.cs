@@ -9,5 +9,6 @@ namespace API.Dto
         public string Path { get; set; }
 
         public ICollection<ConnectionDetailDto> ConnectionDetails { get; set; }
+        public ICollection<ConnectionFilterDto> ConnectionFilters { get; set; }
     }
 }

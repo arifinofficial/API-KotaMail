@@ -61,7 +61,7 @@ namespace API.Service
 
             return response;
         }
-        private static async Task<List<EmailSummaryResponse>> GetSummaries(IMailFolder folder, ICollection<ConnectionDetailFilterDto> filterMail)
+        private static async Task<List<EmailSummaryResponse>> GetSummaries(IMailFolder folder, ICollection<ConnectionFilterDto> filterMail)
         {
             var uniqueIds = new List<UniqueId>();
             SearchQuery query = SearchQuery.All;

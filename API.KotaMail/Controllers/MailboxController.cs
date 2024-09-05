@@ -30,14 +30,14 @@ namespace API.KotaMail.Controllers
                 return GetErrorJson(response);
 
             var connectionDto = response.DtoCollection.FirstOrDefault();
-            var connectionDetailFilterDto = connectionDto.ConnectionDetails.FirstOrDefault()?.ConnectionDetailFilters;
+            var connectionFilterDto = connectionDto.ConnectionFilters;
 
             var mailboxResponse = await _mailboxService.GetEmailSummaries(new GenericRequest<EmailSummaryRequest>
             {
                 Data = new EmailSummaryRequest
                 {
                     Connection = connectionDto,
-                    ConnectionDetailFilters = connectionDetailFilterDto
+                    ConnectionDetailFilters = connectionFilterDto
                 }
             });
 
